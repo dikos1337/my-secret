@@ -112,7 +112,7 @@ export default {
     },
     sendForm() {
       if (this.validateData(this.form)) {
-        console.log({...this.form}); // Это буду отправлять
+        console.log({ ...this.form, date: Date.now(), viewed: false }); // Это буду отправлять
         this.form.secret = this.form.passphrase = "";
       } else {
         console.log("error");
