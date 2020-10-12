@@ -109,7 +109,7 @@ export default {
   methods: {
     sendForm() {
       if (!this.$v.$invalid) {
-        console.log({ ...this.form, date: Date.now(), viewed: false }); // Это буду отправлять
+        console.log({ ...this.form, date: Date.now()}); // Это буду отправлять
         this.$v.$reset();
         this.form.secret = this.form.passphrase = ""; // Очищаю форму
       } else {
