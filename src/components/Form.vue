@@ -4,51 +4,57 @@
     method="post"
     autocomplete="off"
     action="/"
-    class="form-horizontal"
     @submit.prevent="sendForm"
   >
-    <!-- <input
-      type="hidden"
-      name="shrimp"
-      value="qw0vz81t43ziv07egotzrcjafsfzzf7285u75yqoddwpgyabm560v3ax1zdbdqryxaihdd72rnfjhrmdocz2ubysob1zmi6bm03"
-    /> -->
     <fieldset>
       <div class="form-group">
         <textarea
-          rows="7"
+          rows="5"
           class="form-control"
           name="secret"
           autocomplete="off"
           placeholder="Тайное содержимое вводится сюда..."
-          v-model="form.secret"
+          v-model.trim="form.secret"
+          :class="{
+            'is-invalid': $v.form.secret.$dirty && !$v.form.secret.required,
+          }"
         ></textarea>
-        <!-- <div class="chars-display lightest"></div> -->
+        <small class="invalid-feedback">Введите сообщение.</small>
       </div>
-      <!-- <div class="well options-box"> -->
       <div class="title">Настройки приватности</div>
       <div class="form-group">
         <label class="control-label lighter" for="passphraseField"
           >Фраза-пропуск:</label
         >
-        <div class="controls">
-          <input
-            class="form-control"
-            type="text"
-            name="passphrase"
-            id="passphraseField"
-            value=""
-            placeholder="Слово или фраза, которую сложно угадать"
-            autocomplete="off"
-            v-model="form.passphrase"
-          />
-        </div>
+        <input
+          class="form-control"
+          type="text"
+          name="passphrase"
+          id="passphraseField"
+          value=""
+          placeholder="Слово или фраза, которую сложно угадать"
+          autocomplete="off"
+          v-model.trim="form.passphrase"
+          :class="{
+            'is-invalid':
+              $v.form.passphrase.$dirty && !$v.form.passphrase.required,
+          }"
+        />
+        <small class="invalid-feedback">Введите фразу-пропуск.</small>
       </div>
       <div class="form-group">
         <label class="control-label lighter" for="recipientField"
           >Lifetime:</label
         >
         <div class="form-group">
-          <select name="ttl" class="form-control" v-model="form.ttl">
+          <select
+            name="ttl"
+            class="form-control"
+            v-model.trim="form.ttl"
+            :class="{
+              'is-invalid': $v.form.ttl.$dirty && !$v.form.ttl.required,
+            }"
+          >
             <option value="604800.0" selected="">7 days</option>
             <option value="259200.0">3 days</option>
             <option value="86400.0">1 day</option>
@@ -58,25 +64,20 @@
             <option value="1800.0">30 minutes</option>
             <option value="300.0">5 minutes</option>
           </select>
+          <small class="invalid-feedback">Выберите lifetime.</small>
         </div>
       </div>
-      <!-- </div> -->
       <button
         class="btn btn-outline-secondary"
         type="submit"
         name="kind"
         value="share"
+        :class="{
+          disabled: !($v.form.secret.required && $v.form.passphrase.required),
+        }"
       >
         Создать ссылку на тайну*
       </button>
-      <!-- <button
-              class="generate btn btn-large btn-block cufon"
-              type="submit"
-              name="kind"
-              value="generate"
-            >
-              Или сгенинировать одноразовый пароль
-            </button> -->
     </fieldset>
     <hr />
     <p class="lead">
@@ -86,6 +87,7 @@
 </template>
 
 <script>
+import { required } from "vuelidate/lib/validators";
 export default {
   name: "Form",
   data() {
@@ -97,25 +99,23 @@ export default {
       },
     };
   },
-  methods: {
-    validateData(form) {
-      if (form.secret == "") {
-        return false;
-      } else if (form.passphrase == "") {
-        return false;
-      } else if (!Number(form.ttl)) {
-        return false;
-      } else {
-        console.log("validating data");
-        return true;
-      }
+  validations: {
+    form: {
+      secret: { required },
+      passphrase: { required },
+      ttl: { required },
     },
+  },
+  methods: {
     sendForm() {
-      if (this.validateData(this.form)) {
+      if (!this.$v.$invalid) {
         console.log({ ...this.form, date: Date.now(), viewed: false }); // Это буду отправлять
-        this.form.secret = this.form.passphrase = "";
+        this.$v.$reset();
+        this.form.secret = this.form.passphrase = ""; // Очищаю форму
       } else {
+        this.$v.$touch();
         console.log("error");
+        return;
       }
     },
   },
