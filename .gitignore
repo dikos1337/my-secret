@@ -2,6 +2,7 @@
 node_modules
 dist
 backend/core/__pycache__
+backend/mysecret/__pycache__
 backend/core/settings.py
 venv
 
@@ -23,3 +24,4 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
