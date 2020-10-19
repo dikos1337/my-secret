@@ -72,9 +72,8 @@
         type="submit"
         name="kind"
         value="share"
-        :disabled="!($v.form.secret.required && $v.form.passphrase.required)"
         :class="{
-          active: $v.form.secret.required && $v.form.passphrase.required,
+          disabled: !($v.form.secret.required && $v.form.passphrase.required),
         }"
       >
         Создать ссылку на тайну*
@@ -110,7 +109,7 @@ export default {
   methods: {
     sendForm() {
       if (!this.$v.$invalid) {
-        console.log({ ...this.form, date: Date.now() }); // Это буду отправлять
+        console.log({ ...this.form }); // Это буду отправлять
         this.$v.$reset();
         this.form.secret = this.form.passphrase = ""; // Очищаю форму
       } else {
