@@ -1,7 +1,8 @@
-# from django.urls import path
+from django.urls import path  # , include
 
-# from . import views
+from .views import SecretViewSet, CreateSecretView  # , TestView
 
 urlpatterns = [
-    # path("", TemplateView.as_view(template_name="mysecret/index.html")),
+    path(r'secrets', CreateSecretView.as_view()),
+    path(r'secrets/<str:pk>', SecretViewSet.as_view({'get': 'retrieve'})),
 ]
