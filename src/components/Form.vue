@@ -48,11 +48,12 @@
         >
         <div class="form-group">
           <select
-            name="ttl"
+            name="lifetime"
             class="form-control"
-            v-model.trim="form.ttl"
+            v-model.trim="form.lifetime"
             :class="{
-              'is-invalid': $v.form.ttl.$dirty && !$v.form.ttl.required,
+              'is-invalid':
+                $v.form.lifetime.$dirty && !$v.form.lifetime.required,
             }"
           >
             <option value="604800.0" selected="">7 days</option>
@@ -88,6 +89,8 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
+import axios from "axios";
+
 export default {
   name: "Form",
   data() {
@@ -95,7 +98,7 @@ export default {
       form: {
         secret: "",
         passphrase: "",
-        ttl: "300.0",
+        lifetime: "300.0",
       },
     };
   },
@@ -103,15 +106,28 @@ export default {
     form: {
       secret: { required },
       passphrase: { required },
-      ttl: { required },
+      lifetime: { required },
     },
   },
   methods: {
     sendForm() {
       if (!this.$v.$invalid) {
-        console.log({ ...this.form }); // Это буду отправлять
+        axios
+          .post(
+            "/api/v1/secrets",
+            { ...this.form },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => console.log(response.data))
+          .catch((error) => console.log(error));
+
+        // Очищаю форму
         this.$v.$reset();
-        this.form.secret = this.form.passphrase = ""; // Очищаю форму
+        this.form.secret = this.form.passphrase = "";
       } else {
         this.$v.$touch();
         return;
