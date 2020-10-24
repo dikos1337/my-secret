@@ -122,7 +122,7 @@ export default {
               },
             }
           )
-          .then((response) => console.log(response.data)) // response.data.id это надо закидыватьв пропсы и выдавать выше
+          .then((response) => this.$emit('secret-id',response.data.id)) // response.data.id это надо закидыватьв пропсы и выдавать выше
           .catch((error) => console.log(error));
 
         // Очищаю форму

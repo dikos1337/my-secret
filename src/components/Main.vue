@@ -4,7 +4,7 @@
     <main role="main" class="container">
       <div class="starter-template">
         <h3>Вставьте пароль, тайное сообщение или частную ссылку ниже.</h3>
-        <Form />
+        <Form v-on:secret-id="testFunc"/>
       </div>
     </main>
   </div>
@@ -17,6 +17,11 @@ export default {
   components: {
     Form,
   },
+  methods: {
+    testFunc(id) {
+      console.log(id)
+    }
+  }
 };
 </script>
 
