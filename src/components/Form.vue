@@ -4,7 +4,7 @@
     method="post"
     autocomplete="off"
     action="/"
-    @submit.prevent="sendForm"
+    @submit.prevent="onSubmit"
   >
     <fieldset>
       <div class="form-group">
@@ -110,7 +110,7 @@ export default {
     },
   },
   methods: {
-    sendForm() {
+    onSubmit() {
       if (!this.$v.$invalid) {
         axios
           .post(
@@ -122,7 +122,7 @@ export default {
               },
             }
           )
-          .then((response) => this.$emit('secret-id',response.data.id)) // response.data.id это надо закидыватьв пропсы и выдавать выше
+          .then((response) => this.$emit("secret-id", response.data.id)) // response.data.id это надо закидыватьв пропсы и выдавать выше
           .catch((error) => console.log(error));
 
         // Очищаю форму

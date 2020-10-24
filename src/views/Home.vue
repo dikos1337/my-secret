@@ -1,27 +1,27 @@
 <template>
-  <div class="main">
+  <div class="home">
     <!-- <h1>{{ msg }}</h1> -->
-    <main role="main" class="container">
+    <main role="home" class="container">
       <div class="starter-template">
         <h3>Вставьте пароль, тайное сообщение или частную ссылку ниже.</h3>
-        <Form v-on:secret-id="testFunc"/>
+        <Form @secret-id="testFunc" />
       </div>
     </main>
   </div>
 </template>
 
 <script>
-import Form from "./Form";
+import Form from "@/components/Form";
 export default {
-  name: "Main",
+  name: "Home",
   components: {
     Form,
   },
   methods: {
     testFunc(id) {
-      console.log(id)
-    }
-  }
+      console.log(id);
+    },
+  },
 };
 </script>
 
