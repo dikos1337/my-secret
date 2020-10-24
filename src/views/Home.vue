@@ -4,7 +4,7 @@
     <main role="home" class="container">
       <div class="starter-template">
         <h3>Вставьте пароль, тайное сообщение или частную ссылку ниже.</h3>
-        <Form @secret-id="testFunc" />
+        <Form @secret-id="getSecretId" />
       </div>
     </main>
   </div>
@@ -18,8 +18,8 @@ export default {
     Form,
   },
   methods: {
-    testFunc(id) {
-      console.log(id);
+    getSecretId(secretId) {
+      console.log(secretId);
     },
   },
 };

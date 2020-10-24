@@ -12,7 +12,7 @@ export default new Router({
             component: Home
         },
         {
-            path: "/private",
+            path: "/private/:id",
             component: () => import("./views/Private.vue")
         }
     ]
