@@ -5,7 +5,7 @@ backend/db.sqlite3
 backend/core/__pycache__
 backend/mysecret/__pycache__
 backend/core/settings.py
-venv
+backend/venv
 
 # local env files
 .env.local
