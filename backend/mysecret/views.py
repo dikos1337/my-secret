@@ -1,19 +1,17 @@
-# from django.shortcuts import render
-# from rest_framework.response import Response
-from rest_framework import viewsets, generics  # ,views
+from rest_framework import generics
 from .models import Secret
-from .serializers import RetrieveSecretSerializer, CreateSecretSerializer
+from .serializers import SecretSerializer
 
 
 # Create your views here.
-class SecretViewSet(viewsets.ModelViewSet):
-    queryset = Secret.objects.all()
-    serializer_class = RetrieveSecretSerializer
-
-
 class CreateSecretView(generics.CreateAPIView):
     queryset = Secret.objects.all()
-    serializer_class = CreateSecretSerializer
+    serializer_class = SecretSerializer
+
+
+class RetriveSecretView(generics.RetrieveAPIView):
+    queryset = Secret.objects.all()
+    serializer_class = SecretSerializer
 
 
 # class TestView(views.APIView):

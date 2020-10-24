@@ -8,7 +8,7 @@ class RetrieveSecretSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class CreateSecretSerializer(serializers.ModelSerializer):
+class SecretSerializer(serializers.ModelSerializer):
     class Meta:
         model = Secret
-        fields = ('secret', 'passphrase', 'lifetime')
+        fields = ('id', 'secret', 'passphrase', 'lifetime')
