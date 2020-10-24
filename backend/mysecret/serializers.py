@@ -1,5 +1,6 @@
-from .models import Secret
 from rest_framework import serializers
+
+from .models import Secret
 
 
 class RetrieveSecretSerializer(serializers.ModelSerializer):
