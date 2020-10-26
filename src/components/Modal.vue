@@ -22,6 +22,7 @@
                 <div class="modal-body">
                   <p>Поделиться этой ссылкой:</p>
                   <input class="form-control" type="text" :value="makeUrl()" />
+                  <p><a :href="makeUrl()">{{makeUrl()}}</a></p>
                 </div>
                 <div class="modal-footer">
                   <button
@@ -29,10 +30,10 @@
                     class="btn btn-secondary"
                     @click="showModal = false"
                   >
-                    Close
+                    Закрыть
                   </button>
                   <button type="button" class="btn btn-primary">
-                    Save changes
+                    Скопировать ссылку
                   </button>
                 </div>
               </div>

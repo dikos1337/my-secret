@@ -24,16 +24,12 @@ export default {
         .get(`/api/v1/secrets/${this.secretId}`)
         .then((response) => {
           this.secretData = { ...response.data };
-          console.log(this.secretData);
-          console.log(response);
-          this.deleteSecret(console.log("Удаляю секрет"));
+          this.deleteSecret(response.data.id);
         })
         .catch((error) => console.log(error));
     },
-    deleteSecret() {},
-    test() {
-      console.log(this.$route);
-      console.log(this.secretId);
+    deleteSecret(secretId) {
+      console.log(`Удаляю секрет с id: ${secretId}`)
     },
   },
 };

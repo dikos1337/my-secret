@@ -28,7 +28,6 @@ export default {
   },
   methods: {
     getSecretId(secretId) {
-      console.log(secretId);
       this.secretId = secretId;
     },
   },
