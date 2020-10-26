@@ -6,20 +6,30 @@
         <h3>Вставьте пароль, тайное сообщение или частную ссылку ниже.</h3>
         <Form @secret-id="getSecretId" />
       </div>
+      <Modal v-bind:secretId="secretId" />
     </main>
   </div>
 </template>
 
 <script>
 import Form from "@/components/Form";
+import Modal from "@/components/Modal";
+
 export default {
   name: "Home",
+  data() {
+    return {
+      secretId: "",
+    };
+  },
   components: {
     Form,
+    Modal,
   },
   methods: {
     getSecretId(secretId) {
       console.log(secretId);
+      this.secretId = secretId;
     },
   },
 };
