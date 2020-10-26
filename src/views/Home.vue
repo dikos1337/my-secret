@@ -1,12 +1,11 @@
 <template>
   <div class="home">
-    <!-- <h1>{{ msg }}</h1> -->
     <main role="home" class="container">
       <div class="starter-template">
         <h3>Вставьте пароль, тайное сообщение или частную ссылку ниже.</h3>
-        <Form @secret-id="getSecretId" />
+        <Form @secret-id="getSecretId" @set-modal-state="setModalState" />
       </div>
-      <Modal v-bind:secretId="secretId" />
+      <Modal v-bind:secretId="secretId" v-bind:modalState="modalState" @set-modal-state="setModalState"/>
     </main>
   </div>
 </template>
@@ -20,6 +19,7 @@ export default {
   data() {
     return {
       secretId: "",
+      modalState: false,
     };
   },
   components: {
@@ -30,6 +30,9 @@ export default {
     getSecretId(secretId) {
       this.secretId = secretId;
     },
+    setModalState(state){
+      this.modalState = state
+    }
   },
 };
 </script>

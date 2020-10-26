@@ -122,9 +122,12 @@ export default {
               },
             }
           )
-          .then((response) => this.$emit("secret-id", response.data.id)) // response.data.id это надо закидыватьв пропсы и выдавать выше
-          .catch((error) => console.log(error));
-
+          .then((response) => {
+            this.$emit("secret-id", response.data.id); // Прокидываю id выше
+            this.$emit("set-modal-state", true); // Открываю модалку
+          })
+          .catch((error) => console.log(error)); // сюда можно флаг для текста модалки прокинуть ок или нет
+                                                 // и установить флаг чистить ли текст в формах, при ошибке не чистить
         // Очищаю форму
         this.$v.$reset();
         this.form.secret = this.form.passphrase = "";

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="showModal">
+    <div v-if="modalState">
       <transition name="modal">
         <div class="modal-mask">
           <div class="modal-wrapper">
@@ -14,7 +14,7 @@
                     data-dismiss="modal"
                     aria-label="Close"
                   >
-                    <span aria-hidden="true" @click="showModal = false"
+                    <span aria-hidden="true" @click="$emit('set-modal-state',false)"
                       >&times;</span
                     >
                   </button>
@@ -22,13 +22,15 @@
                 <div class="modal-body">
                   <p>Поделиться этой ссылкой:</p>
                   <input class="form-control" type="text" :value="makeUrl()" />
-                  <p><a :href="makeUrl()">{{makeUrl()}}</a></p>
+                  <p>
+                    <a :href="makeUrl()">{{ makeUrl() }}</a>
+                  </p>
                 </div>
                 <div class="modal-footer">
                   <button
                     type="button"
                     class="btn btn-secondary"
-                    @click="showModal = false"
+                    @click="$emit('set-modal-state',false)"
                   >
                     Закрыть
                   </button>
@@ -42,7 +44,7 @@
         </div>
       </transition>
     </div>
-    <button @click="showModal = true">Click</button>
+    <!-- <button @click="$emit('set-modal-state',true)">Click</button> -->
   </div>
 </template>
 
@@ -51,11 +53,7 @@ export default {
   name: "Modal",
   props: {
     secretId: String,
-  },
-  data() {
-    return {
-      showModal: false,
-    };
+    modalState: Boolean,
   },
   methods: {
     makeUrl() {
