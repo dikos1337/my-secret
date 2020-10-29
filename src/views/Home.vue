@@ -5,14 +5,12 @@
         <h3>Вставьте пароль, тайное сообщение или частную ссылку ниже.</h3>
         <Form @secret-id="getSecretId" @set-modal-state="setModalState" />
       </div>
-      <Modal v-bind:secretId="secretId" v-bind:modalState="modalState" @set-modal-state="setModalState"/>
     </main>
   </div>
 </template>
 
 <script>
 import Form from "@/components/Form";
-import Modal from "@/components/Modal";
 
 export default {
   name: "Home",
@@ -24,15 +22,14 @@ export default {
   },
   components: {
     Form,
-    Modal,
   },
   methods: {
     getSecretId(secretId) {
       this.secretId = secretId;
     },
-    setModalState(state){
-      this.modalState = state
-    }
+    setModalState(state) {
+      this.modalState = state;
+    },
   },
 };
 </script>

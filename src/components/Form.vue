@@ -35,12 +35,7 @@
           placeholder="Слово или фраза, которую сложно угадать"
           autocomplete="off"
           v-model.trim="form.passphrase"
-          :class="{
-            'is-invalid':
-              $v.form.passphrase.$dirty && !$v.form.passphrase.required,
-          }"
         />
-        <small class="invalid-feedback">Введите фразу-пропуск.</small>
       </div>
       <div class="form-group">
         <label class="control-label lighter" for="recipientField"
@@ -74,7 +69,7 @@
         name="kind"
         value="share"
         :class="{
-          disabled: !($v.form.secret.required && $v.form.passphrase.required),
+          disabled: !$v.form.secret.required,
         }"
       >
         Создать ссылку на тайну*
@@ -105,7 +100,7 @@ export default {
   validations: {
     form: {
       secret: { required },
-      passphrase: { required },
+      passphrase: {},
       lifetime: { required },
     },
   },
@@ -124,10 +119,9 @@ export default {
           )
           .then((response) => {
             this.$emit("secret-id", response.data.id); // Прокидываю id выше
-            this.$emit("set-modal-state", true); // Открываю модалку
           })
           .catch((error) => console.log(error)); // сюда можно флаг для текста модалки прокинуть ок или нет
-                                                 // и установить флаг чистить ли текст в формах, при ошибке не чистить
+        // и установить флаг чистить ли текст в формах, при ошибке не чистить
         // Очищаю форму
         this.$v.$reset();
         this.form.secret = this.form.passphrase = "";

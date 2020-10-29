@@ -11,12 +11,13 @@ class Secret(models.Model):
         auto_now=True,
     )
     secret = models.TextField(verbose_name="Содержание секрета",
-                              max_length=8192)
-    passphrase = models.CharField(verbose_name="Фраза-пропуск", max_length=64)
-    lifetime = models.FloatField(
-        verbose_name="Lifetime, время жизни секрета", )
+                              max_length=3000)
+    passphrase = models.CharField(verbose_name="Фраза-пропуск",
+                                  blank=True,
+                                  max_length=64)
+    lifetime = models.FloatField(verbose_name="Lifetime, время жизни секрета")
     viewed = models.BooleanField(verbose_name="Просмотрел ли секрет",
-                                 default=False)  # default False
+                                 default=False)
 
     def __str__(self):
         return self.secret[:100] + ("..." if len(self.secret) > 100 else "")

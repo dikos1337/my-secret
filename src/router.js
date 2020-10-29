@@ -12,6 +12,10 @@ export default new Router({
             component: Home
         },
         {
+            path: "/secret/:id",
+            component: () => import("./views/Secrets.vue")
+        },
+        {
             path: "/private/:id",
             component: () => import("./views/Private.vue")
         }
