@@ -22,7 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include("mysecret.urls")),
     # path("", TemplateView.as_view(template_name="mysecret/index.html")),
-    url(
-        r'^.*$',  # Костыль, чтоб работал vue-router на фронте
-        TemplateView.as_view(template_name="mysecret/index.html")),
+    # url(
+    #     r'^.*$',  # Костыль, чтоб работал vue-router на фронте
+    #     TemplateView.as_view(template_name="mysecret/index.html")),
 ]

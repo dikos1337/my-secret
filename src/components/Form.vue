@@ -1,9 +1,7 @@
 <template>
   <form
     id="createSecret"
-    method="post"
     autocomplete="off"
-    action="/"
     @submit.prevent="onSubmit"
   >
     <fieldset>
@@ -118,18 +116,22 @@ export default {
             }
           )
           .then((response) => {
-            this.$emit("secret-id", response.data.id); // Прокидываю id выше
+            // this.$emit("secret-id", response.data.id); // Прокидываю id выше
+            window.location.href = `/private/${response.data.id}`; // Редирект на private view
           })
           .catch((error) => console.log(error)); // сюда можно флаг для текста модалки прокинуть ок или нет
         // и установить флаг чистить ли текст в формах, при ошибке не чистить
         // Очищаю форму
-        this.$v.$reset();
-        this.form.secret = this.form.passphrase = "";
+        // this.$v.$reset();
+        // this.form.secret = this.form.passphrase = "";
       } else {
         this.$v.$touch();
         return;
       }
     },
+      newLocation() {
+        
+      }
   },
 };
 </script>

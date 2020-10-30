@@ -3,7 +3,7 @@
     <main role="home" class="container">
       <div class="starter-template">
         <h3>Вставьте пароль, тайное сообщение или частную ссылку ниже.</h3>
-        <Form @secret-id="getSecretId" @set-modal-state="setModalState" />
+        <Form/>
       </div>
     </main>
   </div>
@@ -14,22 +14,8 @@ import Form from "@/components/Form";
 
 export default {
   name: "Home",
-  data() {
-    return {
-      secretId: "",
-      modalState: false,
-    };
-  },
   components: {
     Form,
-  },
-  methods: {
-    getSecretId(secretId) {
-      this.secretId = secretId;
-    },
-    setModalState(state) {
-      this.modalState = state;
-    },
   },
 };
 </script>
