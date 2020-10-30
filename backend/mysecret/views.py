@@ -10,7 +10,7 @@ class CreateSecretView(generics.CreateAPIView):
     serializer_class = SecretSerializer
 
 
-class RetriveSecretView(generics.RetrieveAPIView):
+class RetriveSecretView(generics.RetrieveAPIView, generics.DestroyAPIView):
     queryset = Secret.objects.all()
     serializer_class = SecretSerializer
 

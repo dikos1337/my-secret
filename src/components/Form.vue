@@ -1,9 +1,5 @@
 <template>
-  <form
-    id="createSecret"
-    autocomplete="off"
-    @submit.prevent="onSubmit"
-  >
+  <form id="createSecret" autocomplete="off" @submit.prevent="onSubmit">
     <fieldset>
       <div class="form-group">
         <textarea
@@ -129,9 +125,7 @@ export default {
         return;
       }
     },
-      newLocation() {
-        
-      }
+    newLocation() {},
   },
 };
 </script>

@@ -12,7 +12,8 @@
 
       <div class="secret">
         <em>Тайна (iqsrhg):</em>
-        <span class="form-text text-muted">(вы увидете его только один раз)</span
+        <span class="form-text text-muted"
+          >(вы увидете его только один раз)</span
         ><br />
         <textarea class="form-control" readonly="readonly" rows="3">
 Вставьте пароль, тайное сообщение или частную ссылку ниже.
@@ -26,9 +27,7 @@
       </p>
 
       <hr />
-      <a
-        class="btn btn-danger btn-block"
-        :href="getBurnUrl()"
+      <a class="btn btn-danger btn-block" :href="getBurnUrl()"
         ><i class="icon-fire"></i> Сжечь эту тайну*</a
       >
 
@@ -61,8 +60,8 @@ export default {
     getUrl() {
       return location.href.replace("/private/", "/secret/");
     },
-    getBurnUrl(){
-return location.href + '/burn';
+    getBurnUrl() {
+      return location.href + "/burn";
     },
     getSecret() {
       axios
@@ -82,12 +81,12 @@ return location.href + '/burn';
 
 <style scoped>
 .form-text {
-    display: inline;
+  display: inline;
 
-    margin: 0.2rem;
+  margin: 0.2rem;
 }
 
 .starter-template {
-text-align: left;
+  text-align: left;
 }
 </style>

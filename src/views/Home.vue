@@ -3,7 +3,7 @@
     <main role="home" class="container">
       <div class="starter-template">
         <h3>Вставьте пароль, тайное сообщение или частную ссылку ниже.</h3>
-        <Form/>
+        <Form />
       </div>
     </main>
   </div>
