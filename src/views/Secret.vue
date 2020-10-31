@@ -38,17 +38,16 @@ export default {
   methods: {
     getSecret() {
       axios
-        .get(`/api/v1/secrets/${this.secretId}`)
+        .get(`/api/v1/secret/${this.secretId}`)
         .then((getResponse) => {
           // // После получения ответа я отправляю запрос на удаление
           axios
-            .delete(`/api/v1/secrets/${this.secretId}`)
+            .delete(`/api/v1/secret/${this.secretId}`)
             .then((deleteResponse) => {
               // И только уже после того как успешно удалиться я показываю секрет
               if (deleteResponse.status === 204) {
                 this.secretData = { ...getResponse.data };
               }
-              console.log(deleteResponse);
             });
         })
         .catch((error) => console.log(error));

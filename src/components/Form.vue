@@ -103,7 +103,7 @@ export default {
       if (!this.$v.$invalid) {
         axios
           .post(
-            "/api/v1/secrets",
+            "/api/v1/secret",
             { ...this.form },
             {
               headers: {
@@ -115,8 +115,7 @@ export default {
             // this.$emit("secret-id", response.data.id); // Прокидываю id выше
             window.location.href = `/private/${response.data.id}`; // Редирект на private view
           })
-          .catch((error) => console.log(error)); // сюда можно флаг для текста модалки прокинуть ок или нет
-        // и установить флаг чистить ли текст в формах, при ошибке не чистить
+          .catch((error) => console.error(error)); 
         // Очищаю форму
         // this.$v.$reset();
         // this.form.secret = this.form.passphrase = "";
@@ -125,7 +124,6 @@ export default {
         return;
       }
     },
-    newLocation() {},
   },
 };
 </script>

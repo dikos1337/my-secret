@@ -65,7 +65,7 @@ export default {
     },
     getSecret() {
       axios
-        .get(`/api/v1/secrets/${this.secretId}`)
+        .get(`/api/v1/secret/${this.secretId}`)
         .then((response) => {
           this.secretData = { ...response.data };
           this.deleteSecret(response.data.id);
