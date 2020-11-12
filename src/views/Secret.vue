@@ -2,11 +2,14 @@
   <div class="starter-template">
     <div class="container">
       <div v-if="!secretData.secret">
-        <button class="btn btn-outline-secondary btn-block" @click="getSecret">
+        <button v-if="!secretIsDeleted"
+          class="btn btn-outline-secondary btn-block"
+          @click="showSecretOneTime"
+        >
           Узнать секрет
         </button>
       </div>
-      <div class="shared" v-else>
+      <div v-else class="shared">
         <div class="secret">
           <h3>Это сообщение для вас:</h3>
           <textarea
@@ -21,6 +24,12 @@
           >Ответить другим секретом</router-link
         >
       </div>
+      <div v-if="secretIsDeleted">
+        <h2>Секрет больше не существует</h2>
+        <router-link class="btn btn-outline-secondary btn-block" to="/"
+          >Создать новый секрет</router-link
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -33,24 +42,34 @@ export default {
     return {
       secretId: this.$route.params.id,
       secretData: {},
+      secretIsDeleted: false,
     };
   },
   methods: {
-    getSecret() {
+    showSecretOneTime() {
       axios
         .get(`/api/v1/secret/${this.secretId}`)
         .then((getResponse) => {
+          console.log("click");
           // // После получения ответа я отправляю запрос на удаление
           axios
             .delete(`/api/v1/secret/${this.secretId}`)
             .then((deleteResponse) => {
+              console.log("del");
+
               // И только уже после того как успешно удалиться я показываю секрет
               if (deleteResponse.status === 204) {
                 this.secretData = { ...getResponse.data };
               }
             });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          // Ставлю флаг в true чтоб отрендерить ошибку на фронте
+          console.log(this.secretIsDeleted);
+          this.secretIsDeleted = true;
+          console.log(this.secretIsDeleted);
+        });
     },
     deleteSecret(secretId) {
       console.log(`Удаляю секрет с id: ${secretId}`);
