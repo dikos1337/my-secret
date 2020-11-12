@@ -3,10 +3,10 @@ from rest_framework import serializers
 from .models import Secret
 
 
-class RetrieveSecretSerializer(serializers.ModelSerializer):
+class CheckAvailableSerializer(serializers.ModelSerializer):
     class Meta:
         model = Secret
-        fields = "__all__"
+        fields = ('id', 'passphrase')
 
 
 class SecretSerializer(serializers.ModelSerializer):

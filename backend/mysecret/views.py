@@ -1,13 +1,22 @@
 from rest_framework import generics
 
 from .models import Secret
-from .serializers import SecretSerializer
-
+from .serializers import CheckAvailableSerializer, SecretSerializer
 
 # Create your views here.
+
+
 class CreateSecretView(generics.CreateAPIView):
     queryset = Secret.objects.all()
     serializer_class = SecretSerializer
+
+
+class CheckAvailableView(generics.RetrieveAPIView):
+    queryset = Secret.objects.all()
+    serializer_class = CheckAvailableSerializer
+    # TODO если сущетвует пароль то поле с паролем
+    # заменить на True, а не отправлять сам пароль
+    # если щуствует if тогда флаг Available тоже true иначе false
 
 
 class RetriveSecretView(generics.RetrieveAPIView, generics.DestroyAPIView):

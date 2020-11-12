@@ -2,7 +2,23 @@
   <div class="starter-template">
     <div class="container">
       <div v-if="!secretData.secret">
-        <button v-if="!secretIsDeleted"
+        <div class="form-group">
+          <label class="control-label lighter" for="passphraseField"
+            >Фраза-пропуск:</label
+          >
+          <input
+            class="form-control"
+            type="text"
+            name="passphrase"
+            id="passphraseField"
+            value=""
+            placeholder="Введите фразу-пропуск"
+            autocomplete="off"
+            v-model.trim="form.passphrase"
+          />
+        </div>
+        <button
+          v-if="!secretIsUnavailable"
           class="btn btn-outline-secondary btn-block"
           @click="showSecretOneTime"
         >
@@ -24,8 +40,8 @@
           >Ответить другим секретом</router-link
         >
       </div>
-      <div v-if="secretIsDeleted">
-        <h2>Секрет больше не существует</h2>
+      <div v-if="secretIsUnavailable">
+        <h2>Секрет либо никогда не существовал, либо он уже был просмотрен.</h2>
         <router-link class="btn btn-outline-secondary btn-block" to="/"
           >Создать новый секрет</router-link
         >
@@ -42,34 +58,68 @@ export default {
     return {
       secretId: this.$route.params.id,
       secretData: {},
-      secretIsDeleted: false,
+      secretIsUnavailable: false,
+      passphraseRequired: undefined,
+      form: {
+        passphrase: "",
+      },
     };
+  },
+  mounted() {
+    axios
+      .get(`/api/v1/check/${this.secretId}`)
+      .then((checkResponse) => {
+        console.log(checkResponse);
+        if (checkResponse.data.passphrase != "") {
+          this.passphraseRequired = true;
+        }
+      })
+      .catch(() => {
+        this.secretIsUnavailable = true;
+      });
   },
   methods: {
     showSecretOneTime() {
-      axios
-        .get(`/api/v1/secret/${this.secretId}`)
-        .then((getResponse) => {
-          console.log("click");
-          // // После получения ответа я отправляю запрос на удаление
-          axios
-            .delete(`/api/v1/secret/${this.secretId}`)
-            .then((deleteResponse) => {
-              console.log("del");
+      if (this.passphraseRequired === false) {
+        axios
+          .get(`/api/v1/secret/${this.secretId}`)
+          .then((getResponse) => {
+            // // После получения ответа я отправляю запрос на удаление
+            axios
+              .delete(`/api/v1/secret/${this.secretId}`)
+              .then((deleteResponse) => {
+                // И только уже после того как успешно удалиться я показываю секрет
+                if (deleteResponse.status === 204) {
+                  this.secretData = { ...getResponse.data };
+                }
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+            // Ставлю флаг в true чтоб отрендерить ошибку на фронте
+            this.secretIsUnavailable = true;
+          });
+      } else {
+        axios.post(
+          `/api/v1/secret/${this.secretId}`,
+          { ...this.form },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        ).then(       
+        // TODO
+        // (response) => {
+        //         if (response.status === 204) {
+        //           this.secretData = { ...response.data };
+        //         }
+        //       })
+        // }
+        );
 
-              // И только уже после того как успешно удалиться я показываю секрет
-              if (deleteResponse.status === 204) {
-                this.secretData = { ...getResponse.data };
-              }
-            });
-        })
-        .catch((error) => {
-          console.log(error);
-          // Ставлю флаг в true чтоб отрендерить ошибку на фронте
-          console.log(this.secretIsDeleted);
-          this.secretIsDeleted = true;
-          console.log(this.secretIsDeleted);
-        });
+
+      }
     },
     deleteSecret(secretId) {
       console.log(`Удаляю секрет с id: ${secretId}`);
