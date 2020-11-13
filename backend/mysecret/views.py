@@ -1,4 +1,5 @@
-from rest_framework import generics
+from rest_framework import generics, status, views
+from rest_framework.response import Response
 
 from .models import Secret
 from .serializers import CheckAvailableSerializer, SecretSerializer
@@ -19,9 +20,34 @@ class CheckAvailableView(generics.RetrieveAPIView):
     # если щуствует if тогда флаг Available тоже true иначе false
 
 
-class RetriveSecretView(generics.RetrieveAPIView, generics.DestroyAPIView):
-    queryset = Secret.objects.all()
-    serializer_class = SecretSerializer
+# class RetriveSecretView(generics.RetrieveAPIView, generics.DestroyAPIView):
+#     queryset = Secret.objects.all()
+#     serializer_class = SecretSerializer
+class RetriveSecretView(views.APIView):
+    def post(self, request, pk):
+        secret_id = request.data.get("id")
+        if secret_id is not None:
+            secrets = Secret.objects.get(pk=secret_id)
+        else:
+            return Response({"error": "secret not found"},
+                            status=status.HTTP_404_NOT_FOUND)
+        serializer = SecretSerializer(secrets, many=False)
+        print('serializer', serializer.data['passphrase'])
+        # Сверяю пароль из формы с паролем секрета
+        if request.data["passphrase"] != serializer.data["passphrase"]:
+            return Response({"error": "passphrase is invalid"},
+                            status=status.HTTP_403_FORBIDDEN)
+        else:
+            return Response(serializer.data)
+
+    def delete(self, request):
+        _ = self
+        return
+
+    # TODO проверять если метод пост то проверять пароль
+    # а потом отдавать данные если гет то просто отдавать
+    # А может быть всегда принимать гет чтоб всегда сверять пароль
+    # а то можно будет заменить пост на гет и без пароля узнать секрет?
 
 
 # class TestView(views.APIView):

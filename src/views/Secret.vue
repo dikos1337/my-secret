@@ -80,46 +80,54 @@ export default {
   },
   methods: {
     showSecretOneTime() {
-      if (this.passphraseRequired === false) {
-        axios
-          .get(`/api/v1/secret/${this.secretId}`)
-          .then((getResponse) => {
-            // // После получения ответа я отправляю запрос на удаление
-            axios
-              .delete(`/api/v1/secret/${this.secretId}`)
-              .then((deleteResponse) => {
-                // И только уже после того как успешно удалиться я показываю секрет
-                if (deleteResponse.status === 204) {
-                  this.secretData = { ...getResponse.data };
-                }
-              });
-          })
-          .catch((error) => {
-            console.log(error);
-            // Ставлю флаг в true чтоб отрендерить ошибку на фронте
-            this.secretIsUnavailable = true;
-          });
-      } else {
-        axios.post(
+      // if (this.passphraseRequired === false) {
+      //   axios
+      //     .get(`/api/v1/secret/${this.secretId}`)
+      //     .then((getResponse) => {
+      //       // // После получения ответа я отправляю запрос на удаление
+      //       axios
+      //         .delete(`/api/v1/secret/${this.secretId}`)
+      //         .then((deleteResponse) => {
+      //           // И только уже после того как успешно удалиться я показываю секрет
+      //           if (deleteResponse.status === 204) {
+      //             this.secretData = { ...getResponse.data };
+      //           }
+      //         });
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //       // Ставлю флаг в true чтоб отрендерить ошибку на фронте
+      //       this.secretIsUnavailable = true;
+      //     });
+      // } else {
+      axios
+        .post(
           `/api/v1/secret/${this.secretId}`,
-          { ...this.form },
+          { ...this.form, id: this.secretId },
           {
             headers: {
               "Content-Type": "application/json",
             },
           }
-        ).then(       
-        // TODO
-        // (response) => {
-        //         if (response.status === 204) {
-        //           this.secretData = { ...response.data };
-        //         }
-        //       })
-        // }
-        );
-
-
-      }
+        )
+        .then((response) => {
+          // axios
+          //   .delete(`/api/v1/secret/${this.secretId}`)
+          //   .then(() => {
+              // И только уже после того как успешно удалиться я показываю секрет
+              // if (deleteResponse.status === 200) {
+                console.log("BEFORE", this.secretData);
+                this.secretData = { ...response.data };
+                console.log("AFTER", this.secretData);
+              // }
+            // });
+        })
+        .catch((error) => {
+          console.log(error);
+          // Ставлю флаг в true чтоб отрендерить ошибку на фронте
+          // this.secretIsUnavailable = true;
+        });
+      // }
     },
     deleteSecret(secretId) {
       console.log(`Удаляю секрет с id: ${secretId}`);
