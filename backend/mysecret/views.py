@@ -9,7 +9,6 @@ from .serializers import CheckAvailableSerializer, SecretSerializer
 
 class CreateSecretView(generics.CreateAPIView):
     """Создание секрета"""
-
     queryset = Secret.objects.all()
     serializer_class = SecretSerializer
 
@@ -19,6 +18,22 @@ class CheckAvailableView(generics.RetrieveAPIView):
     рендерить или нет форму для пароля"""
     queryset = Secret.objects.all()
     serializer_class = CheckAvailableSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+
+        # Возвращаю флаг вместо пароля
+        serializer._data["passphrase"] = self._decide_passphrase_flag(
+            serializer)
+        return Response(serializer.data)
+
+    def _decide_passphrase_flag(self, serializer):
+        """Решаю какой флаг вернуть, если пароль нужен, то True
+        иначе False, от этого зависит рендерить ли форму на фронте.
+        """
+        return True if serializer.data["passphrase"] else False
+
     # TODO если сущетвует пароль то поле с паролем
     # заменить на True, а не отправлять сам пароль
     # если щуствует if тогда флаг Available тоже true иначе false
