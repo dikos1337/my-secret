@@ -30,27 +30,21 @@ class CheckAvailableView(generics.RetrieveAPIView):
 class RetriveSecretView(views.APIView):
     """Получение секрета с проверкой правильности пароля"""
     def post(self, request, pk):
-        secret_id = request.data.get("id")
-        secret_passphrase = request.data.get("passphrase", "")
-
-        if secret_id is None:
-            return Response({"error": "secret not found"},
-                            status=status.HTTP_404_NOT_FOUND)
-
         # TODO сделать проверку, обернуть в Exception или что то тако
-        secrets = Secret.objects.get(pk=secret_id)
+        secrets = Secret.objects.get(pk=pk)
         serializer = SecretSerializer(secrets, many=False)
 
         # Сверяю пароль из формы с паролем секрета
+        secret_passphrase = request.data.get("passphrase", "")
         if secret_passphrase != serializer.data["passphrase"]:
             return Response({"error": "passphrase is invalid"},
                             status=status.HTTP_403_FORBIDDEN)
         else:
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request):
         _ = self
-        return
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     # TODO проверять если метод пост то проверять пароль
     # а потом отдавать данные если гет то просто отдавать
