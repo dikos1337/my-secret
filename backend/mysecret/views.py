@@ -59,7 +59,6 @@ class RetriveSecretView(views.APIView):
                             status=status.HTTP_403_FORBIDDEN)
 
     def delete(self, request, pk, format=None):
-        print("DELETe", request.data)
         secret = Secret.objects.get(pk=pk)
         serializer = SecretSerializer(secret, many=False)
 
