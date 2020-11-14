@@ -5,6 +5,8 @@ from django.db import models
 
 # Create your models here.
 class Secret(models.Model):
+    """Модель для хранения секрета"""
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_date = models.DateTimeField(
         verbose_name="Дата создания",

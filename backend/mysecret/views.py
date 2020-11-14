@@ -8,11 +8,15 @@ from .serializers import CheckAvailableSerializer, SecretSerializer
 
 
 class CreateSecretView(generics.CreateAPIView):
+    """Создание секрета"""
+
     queryset = Secret.objects.all()
     serializer_class = SecretSerializer
 
 
 class CheckAvailableView(generics.RetrieveAPIView):
+    """View для проверка фронтом есть ли у секрета пароль чтобы решить
+    рендерить или нет форму для пароля"""
     queryset = Secret.objects.all()
     serializer_class = CheckAvailableSerializer
     # TODO если сущетвует пароль то поле с паролем
@@ -24,17 +28,21 @@ class CheckAvailableView(generics.RetrieveAPIView):
 #     queryset = Secret.objects.all()
 #     serializer_class = SecretSerializer
 class RetriveSecretView(views.APIView):
+    """Получение секрета с проверкой правильности пароля"""
     def post(self, request, pk):
         secret_id = request.data.get("id")
-        if secret_id is not None:
-            secrets = Secret.objects.get(pk=secret_id)
-        else:
+        secret_passphrase = request.data.get("passphrase", "")
+
+        if secret_id is None:
             return Response({"error": "secret not found"},
                             status=status.HTTP_404_NOT_FOUND)
+
+        # TODO сделать проверку, обернуть в Exception или что то тако
+        secrets = Secret.objects.get(pk=secret_id)
         serializer = SecretSerializer(secrets, many=False)
-        print('serializer', serializer.data['passphrase'])
+
         # Сверяю пароль из формы с паролем секрета
-        if request.data["passphrase"] != serializer.data["passphrase"]:
+        if secret_passphrase != serializer.data["passphrase"]:
             return Response({"error": "passphrase is invalid"},
                             status=status.HTTP_403_FORBIDDEN)
         else:
