@@ -2,7 +2,9 @@ from rest_framework import generics, status, views
 from rest_framework.response import Response
 
 from .models import Secret
-from .serializers import CheckAvailableSerializer, SecretSerializer
+from .serializers import (CheckAvailableSerializer, PrivateSerializer,
+                          SecretSerializer)
+from rest_framework.generics import get_object_or_404
 
 # Create your views here.
 
@@ -81,6 +83,13 @@ class RetriveSecretView(views.APIView):
     # а потом отдавать данные если гет то просто отдавать
     # А может быть всегда принимать гет чтоб всегда сверять пароль
     # а то можно будет заменить пост на гет и без пароля узнать секрет?
+
+
+class PrivateView(views.APIView):
+    def get(self, request, pk):
+        secret = get_object_or_404(Secret, pk=pk)
+        serializer = PrivateSerializer(secret, many=False)
+        return Response(serializer.data)
 
 
 # class TestView(views.APIView):

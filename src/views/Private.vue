@@ -1,48 +1,50 @@
 <template>
   <div class="starter-template">
     <div class="container">
-      <h3>Поделиться этой ссылкой:</h3>
-      <br />
-      <input
-        class="form-control"
-        id="readOnlyInput"
-        v-bind:value="getUrl()"
-        readonly="readonly"
-      />
+      <div v-if="secretData.id != ''">
+        <h3>Поделиться этой ссылкой:</h3>
+        <input
+          class="form-control"
+          id="readOnlyInput"
+          v-bind:value="getUrl()"
+          readonly="readonly"
+        />
 
-      <div class="secret">
-        <em>Тайна (iqsrhg):</em>
-        <span class="form-text text-muted"
-          >(вы увидете его только один раз)</span
-        ><br />
-        <textarea class="form-control" readonly="readonly" rows="3">
+        <div class="secret">
+          <em>Тайна:</em>
+          <span class="form-text text-muted"
+            >(вы увидете его только один раз)</span
+          ><br />
+          <textarea class="form-control" readonly="readonly" rows="3">
 Вставьте пароль, тайное сообщение или частную ссылку ниже.
 Не пропускайте чувствительную информацию в беседы и э-почту.</textarea
+          >
+        </div>
+
+        <p>
+          <strong>Истекает через {{ secretData.lifetime }} секунд</strong>.
+          <span class="form-text text-muted">{{caclulateExpiriedDate()}}</span>
+        </p>
+
+        <hr />
+        <a class="btn btn-danger btn-block" :href="getBurnUrl()"
+          ><i class="icon-fire"></i> Сжечь эту тайну*</a
+        >
+
+        <hr />
+        <p class="hint">
+          * Сожжение тайны удалит её до прочтения (щёлкните здесь, чтоыб
+          подтвердить).
+        </p>
+
+        <hr />
+      </div>
+      <div v-else>
+        <h2>Секрет либо никогда не существовал, либо он уже был просмотрен.</h2>
+        <router-link class="btn btn-outline-secondary btn-block" to="/"
+          >Создать новый секрет</router-link
         >
       </div>
-
-      <p>
-        <strong>Истекает через 7 days</strong>.
-        <span class="form-text text-muted">(2020-10-29@12:06:30 UTC)</span>
-      </p>
-
-      <hr />
-      <a class="btn btn-danger btn-block" :href="getBurnUrl()"
-        ><i class="icon-fire"></i> Сжечь эту тайну*</a
-      >
-
-      <hr />
-      <p class="hint">
-        * Сожжение тайны удалит её до прочтения (щёлкните здесь, чтоыб
-        подтвердить).
-      </p>
-
-      <hr />
-      <p class="">
-        <a class="btn btn-outline-secondary btn-block" href="/"
-          >Создать другой секрет</a
-        >
-      </p>
     </div>
   </div>
 </template>
@@ -56,9 +58,20 @@ export default {
       secretData: {},
     };
   },
+  mounted() {
+    axios
+      .get(`/api/v1/private/${this.secretId}`)
+      .then((privatekResponse) => {
+        this.secretData = privatekResponse.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
   methods: {
     getUrl() {
-      return location.href.replace("/private/", "/secret/");
+      // return location.href.replace("/private/", "/secret/");
+      return location.origin + /secret/ + this.secretData.id;
     },
     getBurnUrl() {
       return location.href + "/burn";
@@ -72,9 +85,15 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    deleteSecret(secretId) {
-      console.log(`Удаляю секрет с id: ${secretId}`);
-    },
+    caclulateExpiriedDate() {
+      let created_date = new Date(this.secretData.created_date)
+      let lifetime = this.secretData.lifetime
+      created_date.setSeconds(created_date.getSeconds() + lifetime);
+      return created_date.toLocaleString()
+    }
+    // deleteSecret(secretId) {
+    //   console.log(`Удаляю секрет с id: ${secretId}`);
+    // },
   },
 };
 </script>

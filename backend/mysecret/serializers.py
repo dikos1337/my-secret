@@ -13,3 +13,9 @@ class SecretSerializer(serializers.ModelSerializer):
     class Meta:
         model = Secret
         fields = ('id', 'secret', 'passphrase', 'lifetime')
+
+
+class PrivateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Secret
+        fields = ('id', 'lifetime', 'created_date')
