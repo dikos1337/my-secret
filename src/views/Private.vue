@@ -1,7 +1,7 @@
 <template>
   <div class="starter-template">
     <div class="container">
-      <div v-if="secretData.id != ''">
+      <div v-if="!secretIsUnavailable">
         <h3>Поделиться этой ссылкой:</h3>
         <input
           class="form-control"
@@ -23,7 +23,7 @@
 
         <p>
           <strong>Истекает через {{ secretData.lifetime }} секунд</strong>.
-          <span class="form-text text-muted">{{caclulateExpiriedDate()}}</span>
+          <span class="form-text text-muted">{{ calculateExpiryDate() }}</span>
         </p>
 
         <hr />
@@ -56,6 +56,8 @@ export default {
     return {
       secretId: this.$route.params.id,
       secretData: {},
+      secretIsUnavailable: false,
+
     };
   },
   mounted() {
@@ -64,8 +66,8 @@ export default {
       .then((privatekResponse) => {
         this.secretData = privatekResponse.data;
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        this.secretIsUnavailable = true;
       });
   },
   methods: {
@@ -85,12 +87,12 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    caclulateExpiriedDate() {
-      let created_date = new Date(this.secretData.created_date)
-      let lifetime = this.secretData.lifetime
+    calculateExpiryDate() {
+      let created_date = new Date(this.secretData.created_date);
+      let lifetime = this.secretData.lifetime;
       created_date.setSeconds(created_date.getSeconds() + lifetime);
-      return created_date.toLocaleString()
-    }
+      return created_date.toLocaleString();
+    },
     // deleteSecret(secretId) {
     //   console.log(`Удаляю секрет с id: ${secretId}`);
     // },
