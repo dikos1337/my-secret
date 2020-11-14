@@ -110,17 +110,22 @@ export default {
             },
           }
         )
-        .then((response) => {
-          // axios
-          //   .delete(`/api/v1/secret/${this.secretId}`)
-          //   .then(() => {
-              // И только уже после того как успешно удалиться я показываю секрет
-              // if (deleteResponse.status === 200) {
+        .then((postResponse) => {
+          axios({
+            method: "DELETE",
+            url: `/api/v1/secret/${this.secretId}`,
+            data: { ...this.form, id: this.secretId },
+          })
+            .then((deleteResponse) => {
+              console.log(deleteResponse);
+              // И только уже после того как успешно удалился я показываю секрет
+              if (deleteResponse.status === 204) {
                 console.log("BEFORE", this.secretData);
-                this.secretData = { ...response.data };
+                this.secretData = { ...postResponse.data };
                 console.log("AFTER", this.secretData);
-              // }
-            // });
+              }
+            })
+            .catch((error) => console.log(error));
         })
         .catch((error) => {
           console.log(error);

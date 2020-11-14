@@ -46,20 +46,37 @@ class RetriveSecretView(views.APIView):
     """Получение секрета с проверкой правильности пароля"""
     def post(self, request, pk):
         # TODO сделать проверку, обернуть в Exception или что то тако
-        secrets = Secret.objects.get(pk=pk)
-        serializer = SecretSerializer(secrets, many=False)
+        secret = Secret.objects.get(pk=pk)
+        serializer = SecretSerializer(secret, many=False)
 
         # Сверяю пароль из формы с паролем секрета
-        secret_passphrase = request.data.get("passphrase", "")
-        if secret_passphrase != serializer.data["passphrase"]:
+        # secret_passphrase = request.data.get("passphrase", "")
+
+        if self._validate_passphrase(request, serializer):
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
             return Response({"error": "passphrase is invalid"},
                             status=status.HTTP_403_FORBIDDEN)
-        else:
-            return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def delete(self, request):
-        _ = self
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def delete(self, request, pk, format=None):
+        print("DELETe", request.data)
+        secret = Secret.objects.get(pk=pk)
+        serializer = SecretSerializer(secret, many=False)
+
+        if self._validate_passphrase(request, serializer):
+            secret.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({"error": "passphrase is invalid"},
+                            status=status.HTTP_403_FORBIDDEN)
+
+    def _validate_passphrase(self, request, serializer):
+        """Возвращает результат проверки пароля из формы с паролем секрета"""
+        passphrase = request.data.get("passphrase", "")
+        if passphrase != serializer.data["passphrase"]:
+            return False
+        else:
+            return True
 
     # TODO проверять если метод пост то проверять пароль
     # а потом отдавать данные если гет то просто отдавать
