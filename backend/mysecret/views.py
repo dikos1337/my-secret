@@ -6,8 +6,6 @@ from .serializers import (CheckAvailableSerializer, PrivateSerializer,
                           SecretSerializer)
 from rest_framework.generics import get_object_or_404
 
-# Create your views here.
-
 
 class CreateSecretView(generics.CreateAPIView):
     """Создание секрета"""
@@ -18,11 +16,10 @@ class CreateSecretView(generics.CreateAPIView):
 class CheckAvailableView(generics.RetrieveAPIView):
     """View для проверка фронтом есть ли у секрета пароль чтобы решить
     рендерить или нет форму для пароля"""
-    queryset = Secret.objects.all()
     serializer_class = CheckAvailableSerializer
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
+    def retrieve(self, request, pk, **kwargs):
+        instance = get_object_or_404(Secret, pk=pk)
         serializer = self.get_serializer(instance)
 
         # Возвращаю флаг вместо пароля
@@ -36,24 +33,14 @@ class CheckAvailableView(generics.RetrieveAPIView):
         """
         return True if serializer.data["passphrase"] else False
 
-    # TODO если сущетвует пароль то поле с паролем
-    # заменить на True, а не отправлять сам пароль
-    # если щуствует if тогда флаг Available тоже true иначе false
 
-
-# class RetriveSecretView(generics.RetrieveAPIView, generics.DestroyAPIView):
-#     queryset = Secret.objects.all()
-#     serializer_class = SecretSerializer
 class RetriveSecretView(views.APIView):
     """Получение секрета с проверкой правильности пароля"""
     def post(self, request, pk):
-        # TODO сделать проверку, обернуть в Exception или что то тако
-        secret = Secret.objects.get(pk=pk)
+        secret = get_object_or_404(Secret, pk=pk)
         serializer = SecretSerializer(secret, many=False)
 
         # Сверяю пароль из формы с паролем секрета
-        # secret_passphrase = request.data.get("passphrase", "")
-
         if self._validate_passphrase(request, serializer):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
@@ -61,7 +48,7 @@ class RetriveSecretView(views.APIView):
                             status=status.HTTP_403_FORBIDDEN)
 
     def delete(self, request, pk, format=None):
-        secret = Secret.objects.get(pk=pk)
+        secret = get_object_or_404(Secret, pk=pk)
         serializer = SecretSerializer(secret, many=False)
 
         if self._validate_passphrase(request, serializer):
@@ -78,11 +65,6 @@ class RetriveSecretView(views.APIView):
             return False
         else:
             return True
-
-    # TODO проверять если метод пост то проверять пароль
-    # а потом отдавать данные если гет то просто отдавать
-    # А может быть всегда принимать гет чтоб всегда сверять пароль
-    # а то можно будет заменить пост на гет и без пароля узнать секрет?
 
 
 class PrivateView(views.APIView):

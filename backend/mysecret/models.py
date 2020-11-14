@@ -22,4 +22,5 @@ class Secret(models.Model):
                                  default=False)
 
     def __str__(self):
+        """Отображение в админке первые 100 символов секрета"""
         return self.secret[:100] + ("..." if len(self.secret) > 100 else "")

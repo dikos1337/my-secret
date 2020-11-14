@@ -99,6 +99,7 @@ export default {
               if (deleteResponse.status === 204) {
                 this.secretData = { ...postResponse.data };
                 this.renderButtonRequired = false;
+                this.passphraseRequired = false;
               }
             })
             .catch((error) => console.log(error));
