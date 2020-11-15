@@ -18,4 +18,4 @@ class SecretSerializer(serializers.ModelSerializer):
 class PrivateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Secret
-        fields = ('id', 'lifetime', 'created_date')
+        fields = ('id', 'lifetime', 'created_date', 'secret')

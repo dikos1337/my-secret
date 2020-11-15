@@ -112,13 +112,9 @@ export default {
             }
           )
           .then((response) => {
-            // this.$emit("secret-id", response.data.id); // Прокидываю id выше
             window.location.href = `/private/${response.data.id}`; // Редирект на private view
           })
-          .catch((error) => console.error(error)); 
-        // Очищаю форму
-        // this.$v.$reset();
-        // this.form.secret = this.form.passphrase = "";
+          .catch((error) => console.error(error));
       } else {
         this.$v.$touch();
         return;

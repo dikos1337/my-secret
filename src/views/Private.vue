@@ -15,10 +15,12 @@
           <span class="form-text text-muted"
             >(вы увидете его только один раз)</span
           ><br />
-          <textarea class="form-control" readonly="readonly" rows="3">
-Вставьте пароль, тайное сообщение или частную ссылку ниже.
-Не пропускайте чувствительную информацию в беседы и э-почту.</textarea
-          >
+          <textarea
+            class="form-control"
+            readonly="readonly"
+            rows="3"
+            v-model="secretData.secret"
+          ></textarea>
         </div>
 
         <p>

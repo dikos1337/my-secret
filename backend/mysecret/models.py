@@ -12,14 +12,19 @@ class Secret(models.Model):
         verbose_name="Дата создания",
         auto_now=True,
     )
+
     secret = models.TextField(verbose_name="Содержание секрета",
                               max_length=3000)
+
     passphrase = models.CharField(verbose_name="Фраза-пропуск",
                                   blank=True,
                                   max_length=64)
+
     lifetime = models.FloatField(verbose_name="Lifetime, время жизни секрета")
-    viewed = models.BooleanField(verbose_name="Просмотрел ли секрет",
-                                 default=False)
+
+    preview_has_been_shown = models.BooleanField(
+        verbose_name="Было ли показано превью для его создателя",
+        default=False)
 
     def __str__(self):
         """Отображение в админке первые 100 символов секрета"""

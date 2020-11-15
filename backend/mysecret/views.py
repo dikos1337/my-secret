@@ -71,6 +71,15 @@ class PrivateView(views.APIView):
     def get(self, request, pk):
         secret = get_object_or_404(Secret, pk=pk)
         serializer = PrivateSerializer(secret, many=False)
+
+        # на /private/ надо показать секрет только 1 раз, для его создателя
+        # После надо показывать звездочки
+        if secret.preview_has_been_shown is False:
+            secret.preview_has_been_shown = True
+            secret.save()
+        else:
+            secret.secret = "*" * 10
+
         return Response(serializer.data)
 
 
