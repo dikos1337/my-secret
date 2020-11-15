@@ -60,7 +60,7 @@ export default {
       secretData: {},
       secretIsUnavailable: false,
       renderButtonRequired: true,
-      passphraseRequired: undefined,
+      passphraseRequired: false,
       passphraseIsWrong: false,
       form: {
         passphrase: "",
