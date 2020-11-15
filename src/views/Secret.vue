@@ -14,7 +14,11 @@
           placeholder="Введите фразу-пропуск"
           autocomplete="off"
           v-model.trim="form.passphrase"
+          :class="{
+            'is-invalid': passphraseIsWrong,
+          }"
         />
+        <small class="invalid-feedback">Неверный пароль.</small>
       </div>
 
       <div v-if="secretData.secret" class="secret">
@@ -58,6 +62,7 @@ export default {
       secretIsUnavailable: false,
       renderButtonRequired: true,
       passphraseRequired: undefined,
+      passphraseIsWrong: false,
       form: {
         passphrase: "",
       },
@@ -105,11 +110,11 @@ export default {
             .catch((error) => console.log(error));
         })
         .catch((error) => {
-          console.log(error);
-          // Ставлю флаг в true чтоб отрендерить ошибку на фронте
-          // this.secretIsUnavailable = true;
+          if (error.response.status == 403) {
+            // устанавливаю флаг для подсказки для пользователя что пароль неверный
+            this.passphraseIsWrong = true;
+          }
         });
-      // }
     },
   },
 };

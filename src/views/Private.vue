@@ -27,6 +27,7 @@
         </p>
 
         <hr />
+        <!-- TODO: router-link -->
         <a class="btn btn-danger btn-block" :href="getBurnUrl()"
           ><i class="icon-fire"></i> Сжечь эту тайну*</a
         >
@@ -57,7 +58,6 @@ export default {
       secretId: this.$route.params.id,
       secretData: {},
       secretIsUnavailable: false,
-
     };
   },
   mounted() {
