@@ -27,9 +27,8 @@
         </p>
 
         <hr />
-        <!-- TODO: router-link -->
-        <a class="btn btn-danger btn-block" :href="getBurnUrl()"
-          ><i class="icon-fire"></i> Сжечь эту тайну*</a
+        <router-link class="btn btn-danger btn-block" :to="getBurnUrl()"
+          >Сжечь эту тайну*</router-link
         >
 
         <hr />
@@ -72,11 +71,10 @@ export default {
   },
   methods: {
     getUrl() {
-      // return location.href.replace("/private/", "/secret/");
       return location.origin + /secret/ + this.secretData.id;
     },
     getBurnUrl() {
-      return location.href + "/burn";
+      return "/burn/" + this.secretData.id;
     },
     getSecret() {
       axios

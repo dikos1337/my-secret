@@ -29,7 +29,7 @@
           rows="4"
           v-model="secretData.secret"
         ></textarea>
-        <p class="TODO">Осторожно: мы покажем это только один раз.</p>
+        <p class="text-secondary">Осторожно: мы покажем это только один раз.</p>
         <router-link class="btn btn-outline-secondary btn-block" to="/"
           >Ответить другим секретом</router-link
         >
@@ -52,7 +52,6 @@
 </template>
 
 <script>
-// TODO короче мне надо на бекенде сделать метод который возвращает есть ли пароль у секрте и если такой секрет вообще, если есть пароль то вывожу форму если нет то просто кнопка узнать секрет
 import axios from "axios";
 export default {
   data() {

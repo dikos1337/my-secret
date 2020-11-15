@@ -18,6 +18,10 @@ export default new Router({
         {
             path: "/private/:id",
             component: () => import("./views/Private.vue")
+        },
+        {
+            path: "/burn/:id",
+            component: () => import("./views/Burn.vue")
         }
     ]
 })
