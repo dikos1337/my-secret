@@ -79,7 +79,7 @@ export default {
     burnSecret() {
       axios({
         method: "DELETE",
-        url: `/api/v1/secret/${this.secretId}`,
+        url: `/api/v1/secrets/${this.secretId}`,
         data: { ...this.form, id: this.secretId },
       })
         .then(() => {

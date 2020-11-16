@@ -103,7 +103,7 @@ export default {
       if (!this.$v.$invalid) {
         axios
           .post(
-            "/api/v1/secret",
+            "/api/v1/secrets",
             { ...this.form },
             {
               headers: {

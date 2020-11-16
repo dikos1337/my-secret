@@ -84,7 +84,7 @@ export default {
     showSecretOneTime() {
       axios
         .post(
-          `/api/v1/secret/${this.secretId}`,
+          `/api/v1/secrets/${this.secretId}`,
           { ...this.form, id: this.secretId },
           {
             headers: {
@@ -95,7 +95,7 @@ export default {
         .then((postResponse) => {
           axios({
             method: "DELETE",
-            url: `/api/v1/secret/${this.secretId}`,
+            url: `/api/v1/secrets/${this.secretId}`,
             data: { ...this.form, id: this.secretId },
           })
             .then((deleteResponse) => {
