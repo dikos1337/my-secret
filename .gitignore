@@ -5,13 +5,11 @@ backend/db.sqlite3
 backend/core/__pycache__
 backend/mysecret/__pycache__
 backend/mysecret/migrations/__pycache__
-backend/core/settings.py
 backend/venv
 backend/mysecret/migrations
 
-# local env files
-.env.local
-.env.*.local
+# env files
+.env.*
 
 # Log files
 npm-debug.log*
