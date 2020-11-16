@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .views import (CheckAvailableView, CreateSecretView, PrivateView,
-                    RetriveSecretView)
+from mysecret.views import (CheckAvailableView, CreateSecretView, PrivateView,
+                            RetriveSecretView)
 
 urlpatterns = [
     path(r'secrets', CreateSecretView.as_view()),

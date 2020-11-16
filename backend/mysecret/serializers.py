@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Secret
+from mysecret.models import Secret
 
 
 class CheckAvailableSerializer(serializers.ModelSerializer):

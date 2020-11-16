@@ -2,9 +2,9 @@ from rest_framework import generics, status, views
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
-from .models import Secret
-from .serializers import (CheckAvailableSerializer, PrivateSerializer,
-                          SecretSerializer)
+from mysecret.models import Secret
+from mysecret.serializers import (CheckAvailableSerializer, PrivateSerializer,
+                                  SecretSerializer)
 
 
 class CreateSecretView(generics.CreateAPIView):

@@ -1,5 +1,5 @@
-from backend.mysecret.models import Secret
-import datetime
+from mysecret.models import Secret
+from datetime import datetime
 
 
 def delete_expired_secrets():
