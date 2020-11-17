@@ -15,6 +15,8 @@ from pathlib import Path
 
 import environ
 
+from celery.schedules import crontab
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -147,3 +149,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = [
     os.path.join("static", "mysecret"),
 ]
+
+CELERY_BROKER_URL = "redis://localhost:6379"
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+CELERY_BEAT_SCHEDULE = {
+    'delete-expired-secrets': {
+        'task': 'mysecret.tasks.delete_expired_secrets',
+        'schedule': crontab(minute='*/15')
+    }
+}
