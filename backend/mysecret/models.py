@@ -1,7 +1,8 @@
 import uuid
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
@@ -15,9 +16,7 @@ class Secret(models.Model):
     )
 
     expiration_date = models.DateTimeField(
-        verbose_name="Дата окончания срока действия",
-        default=datetime.now(),
-    )
+        verbose_name="Дата окончания срока действия")
 
     secret = models.TextField(verbose_name="Содержание секрета",
                               max_length=3000)
@@ -38,8 +37,7 @@ class Secret(models.Model):
 
     def save(self, *args, **kwargs):
         # Вычисляю дату окончания срока действия
-        # Не знаю, что за баг, но сохраняет в 2 раза больше чем надо,
-        # по этому делю на 2
-        self.expiration_date += timedelta(seconds=self.lifetime // 2)
+        self.expiration_date = timezone.now() + timedelta(
+            seconds=self.lifetime)
 
         super().save(*args, **kwargs)
