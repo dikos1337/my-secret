@@ -35,6 +35,12 @@ class Secret(models.Model):
         """Отображение в админке первые 100 символов секрета"""
         return self.secret[:100] + ("..." if len(self.secret) > 100 else "")
 
+    def сheck_expiration_date(self):
+        """Проверяет не истёк ли срок действия секрта, если истёк,
+        то возвращает True иначе False
+        """
+        return self.expiration_date <= timezone.now()
+
     def save(self, *args, **kwargs):
         # Вычисляю дату окончания срока действия
         self.expiration_date = timezone.now() + timedelta(
