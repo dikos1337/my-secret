@@ -1,5 +1,5 @@
 <template>
-  <div class="starter-template">
+  <div class="app-template">
     <div class="container">
       <div v-if="!secretIsUnavailable">
         <h3>Поделиться этой ссылкой:</h3>
@@ -45,7 +45,7 @@
         >
       </div>
       <div v-else>
-        <h2>Секрет либо никогда не существовал, либо он уже был просмотрен.</h2>
+        <NotFoundMessage />
         <router-link class="btn btn-outline-secondary btn-block" to="/"
           >Создать новый секрет</router-link
         >
@@ -56,7 +56,12 @@
 
 <script>
 import axios from "axios";
+import NotFoundMessage from "@/components/NotFoundMessage";
+
 export default {
+  components: {
+    NotFoundMessage,
+  },
   data() {
     return {
       secretId: this.$route.params.id,
@@ -86,7 +91,6 @@ export default {
         .get(`/api/v1/secrets/${this.secretId}`)
         .then((response) => {
           this.secretData = { ...response.data };
-          this.deleteSecret(response.data.id);
         })
         .catch((error) => console.log(error));
     },
@@ -96,21 +100,23 @@ export default {
       created_date.setSeconds(created_date.getSeconds() + lifetime);
       return created_date.toLocaleString();
     },
-    // deleteSecret(secretId) {
-    //   console.log(`Удаляю секрет с id: ${secretId}`);
-    // },
   },
 };
 </script>
 
 <style scoped>
-.form-text {
-  display: inline;
-
-  margin: 0.2rem;
-}
-
-.starter-template {
+.app-template {
   text-align: left;
+}
+p {
+  margin-top: 0.2rem;
+  margin-bottom: 0rem;
+}
+hr {
+  margin-top: 0.2rem;
+  margin-bottom: 0.5rem;
+}
+.btn {
+  margin-bottom: 0.5rem;
 }
 </style>

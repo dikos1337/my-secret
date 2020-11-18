@@ -1,6 +1,8 @@
 <template>
   <div class="navbar navbar-dark bg-dark">
-    <router-link class="navbar-brand" to="/">My Secret</router-link>
+    <div class="container">
+      <router-link class="navbar-brand" to="/">My Secret</router-link>
+    </div>
   </div>
 </template>
 

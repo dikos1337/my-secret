@@ -1,5 +1,5 @@
 <template>
-  <div class="starter-template">
+  <div class="app-template">
     <div class="container">
       <div v-if="passphraseRequired" class="form-group">
         <label class="control-label lighter" for="passphraseField"
@@ -35,7 +35,7 @@
         >
       </div>
       <div v-if="secretIsUnavailable">
-        <h2>Секрет либо никогда не существовал, либо он уже был просмотрен.</h2>
+        <NotFoundMessage />
         <router-link class="btn btn-outline-secondary btn-block" to="/"
           >Создать новый секрет</router-link
         >
@@ -53,7 +53,12 @@
 
 <script>
 import axios from "axios";
+import NotFoundMessage from "@/components/NotFoundMessage";
+
 export default {
+  components: {
+    NotFoundMessage,
+  },
   data() {
     return {
       secretId: this.$route.params.id,
@@ -119,5 +124,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.app-template {
+  text-align: left;
+}
 </style>

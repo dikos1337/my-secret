@@ -23,4 +23,15 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.app-template {
+  padding: 1rem 1.5rem;
+  text-align: center;
+}
+h3 {
+  font-weight: 700;
+}
+.form-text {
+  display: inline;
+  margin: 0.2rem;
+}
 </style>
