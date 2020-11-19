@@ -25,7 +25,9 @@
 
         <p>
           <strong>Истекает через {{ secretData.lifetime }} секунд</strong>.
-          <span class="form-text text-muted">{{ calculateExpiryDate() }}</span>
+          <span class="form-text text-muted">{{
+            new Date(secretData.expiration_date).toLocaleString()
+          }}</span>
         </p>
 
         <hr />
@@ -34,10 +36,7 @@
         >
 
         <hr />
-        <p class="hint">
-          * Сожжение тайны удалит её до прочтения (щёлкните здесь, чтоыб
-          подтвердить).
-        </p>
+        <p class="hint">* Сожжение тайны удалит её до прочтения.</p>
         <hr />
 
         <router-link class="btn btn-outline-secondary btn-block" to="/"
@@ -93,12 +92,6 @@ export default {
           this.secretData = { ...response.data };
         })
         .catch((error) => console.log(error));
-    },
-    calculateExpiryDate() {
-      let created_date = new Date(this.secretData.created_date);
-      let lifetime = this.secretData.lifetime;
-      created_date.setSeconds(created_date.getSeconds() + lifetime);
-      return created_date.toLocaleString();
     },
   },
 };
