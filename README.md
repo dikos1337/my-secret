@@ -1,24 +1,55 @@
-# my-secret
+# Запуск под Linux (для разработки)
 
-## Project setup
+Для начала надо скачать проект и установить зависимости.
+```sh
+$ git clone https://github.com/dikos1337/my-secret
+$ cd my-secret
+$ npm install
+$ cd backend
+$ python -m venv venv
+$ . venv/bin/activate
+$ pip install -r requirements.txt
 ```
-npm install
+Cделать миграции и cоздать супер пользователя.
+```sh
+(venv) /backend$ python manage.py makemigrations
+(venv) /backend$ python manage.py migrate
+(venv) /backend$ python manage.py createsuperuser
 ```
-
-### Compiles and hot-reloads for development
-```
+Запуск fronend
+```sh
 npm run serve
 ```
-
-### Compiles and minifies for production
+Запуск backend
+```sh
+(venv) /backend$ python manage.py runserver
 ```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
+Запуск celery (нужен запущенный redis сервер)
+```sh
+(venv) /backend$ celery -A core worker -l info -B
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+# Скриншоты
+
+<!-- https://imgur.com/a/rrCxAYl -->
+
+### Главная страница:
+
+![alt text](https://i.imgur.com/TsYnAKs.png)
+
+### Страница после создания секрета:
+
+![alt text](https://i.imgur.com/oGEBHS0.png)
+
+### Страница с требованием пароля
+
+![alt text](https://i.imgur.com/Rp52g8L.png)
+
+![alt text](https://i.imgur.com/axzca8g.png)
+
+### Страница с секретом
+
+![alt text](https://i.imgur.com/1UJJEK5.png)
+
+### Если после просмотра секрета обновить страницу
+![alt text](https://i.imgur.com/OdAVnkJ.png)
