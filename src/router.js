@@ -22,6 +22,9 @@ export default new Router({
         {
             path: "/burn/:id",
             component: () => import("./views/Burn.vue")
-        }
+        },
+        {
+            path: "*",
+            component: () => import("./views/PageNotFound.vue") }
     ]
 })
