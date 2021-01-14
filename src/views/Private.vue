@@ -3,13 +3,19 @@
     <div class="container">
       <div v-if="!secretIsUnavailable">
         <h3>Поделиться этой ссылкой:</h3>
-        <input
-          class="form-control"
-          id="readOnlyInput"
-          v-bind:value="getUrl()"
-          readonly="readonly"
-        />
-
+        <div class="input-group">
+          <input
+            class="form-control"
+            id="readOnlyInput"
+            v-bind:value="getUrl()"
+            readonly="readonly"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-success" @click="copyToClipboard">
+              Copy
+            </button>
+          </div>
+        </div>
         <div class="secret">
           <em>Тайна:</em>
           <span class="form-text text-muted"
@@ -92,6 +98,9 @@ export default {
           this.secretData = { ...response.data };
         })
         .catch((error) => console.log(error));
+    },
+    copyToClipboard() {
+      navigator.clipboard.writeText(this.getUrl());
     },
   },
 };
