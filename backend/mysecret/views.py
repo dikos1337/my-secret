@@ -1,3 +1,5 @@
+from hashlib import sha256
+
 from rest_framework import generics, status, views
 from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.generics import get_object_or_404
@@ -12,6 +14,23 @@ class CreateSecretView(generics.CreateAPIView):
     """Создание секрета"""
     queryset = Secret.objects.all()
     serializer_class = SecretSerializer
+
+    def create(self, request, *args, **kwargs):
+        passphrase = request.data.get('passphrase', '')
+
+        # Если пароль есть то записываю его хеш иначе оставляю пустую строку
+        if passphrase:
+            passphrase_bytes_string = passphrase.encode()
+            passphrase_hash = sha256(passphrase_bytes_string).hexdigest()
+            request.data['passphrase'] = passphrase_hash
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data,
+                        status=status.HTTP_201_CREATED,
+                        headers=headers)
 
 
 class CheckAvailableView(generics.RetrieveAPIView):
@@ -72,7 +91,17 @@ class RetriveSecretView(views.APIView):
         если пароли совпдают то возвращает True иначе False
         """
         passphrase = request.data.get("passphrase", "")
-        return passphrase == serializer.data["passphrase"]
+
+        # Если пароль не пустой то вычисляю хеш и сравниваю его
+        if passphrase:
+            passphrase_bytes_string = passphrase.encode()
+            passphrase_hash = sha256(passphrase_bytes_string).hexdigest()
+
+            return passphrase_hash == serializer.data["passphrase"]
+
+        # Иначе сравниваю пустую строчку с пустой строчкой
+        else:
+            return passphrase == serializer.data["passphrase"]
 
 
 class PrivateView(views.APIView):
