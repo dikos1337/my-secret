@@ -18,7 +18,7 @@ Cделать миграции и cоздать супер пользовате�
 (venv) /backend$ python manage.py migrate
 (venv) /backend$ python manage.py createsuperuser
 ```
-Запуск fronend
+Запуск frontend
 ```sh
 $ npm run serve
 ```
